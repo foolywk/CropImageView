@@ -12,12 +12,12 @@ class ViewController: UIViewController {
 
     @IBOutlet var cropImageViewContainer: UIView!
     
+    var cropImageView = CropImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let cropImageView = NSBundle.mainBundle().loadNibNamed("CropImageView", owner: self, options: nil).first as CropImageView
         
-        cropImageView.setupInContainer(cropImageViewContainer)
+        cropImageView = CropImageView(container: cropImageViewContainer)
         cropImageView.setImage(UIImage(named:"sampleImage")!)
     }
 }

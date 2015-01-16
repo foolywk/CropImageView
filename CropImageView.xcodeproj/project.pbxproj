@@ -14,7 +14,6 @@
 		9E0049AF1A683F9B00EBF440 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E0049AE1A683F9B00EBF440 /* Images.xcassets */; };
 		9E0049B21A683F9B00EBF440 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E0049B01A683F9B00EBF440 /* LaunchScreen.xib */; };
 		9E0049BE1A683F9B00EBF440 /* CropImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0049BD1A683F9B00EBF440 /* CropImageViewTests.swift */; };
-		9E0049C81A683FC900EBF440 /* CropImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E0049C71A683FC900EBF440 /* CropImageView.xib */; };
 		9E0049CA1A68404800EBF440 /* CropImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0049C91A68404800EBF440 /* CropImageView.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +39,6 @@
 		9E0049B71A683F9B00EBF440 /* CropImageViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CropImageViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E0049BC1A683F9B00EBF440 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9E0049BD1A683F9B00EBF440 /* CropImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropImageViewTests.swift; sourceTree = "<group>"; };
-		9E0049C71A683FC900EBF440 /* CropImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CropImageView.xib; sourceTree = "<group>"; };
 		9E0049C91A68404800EBF440 /* CropImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CropImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,7 +87,6 @@
 				9E0049AE1A683F9B00EBF440 /* Images.xcassets */,
 				9E0049B01A683F9B00EBF440 /* LaunchScreen.xib */,
 				9E0049C91A68404800EBF440 /* CropImageView.swift */,
-				9E0049C71A683FC900EBF440 /* CropImageView.xib */,
 				9E0049A61A683F9B00EBF440 /* CropImageView.xcdatamodeld */,
 				9E0049A21A683F9B00EBF440 /* Supporting Files */,
 			);
@@ -201,7 +198,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E0049C81A683FC900EBF440 /* CropImageView.xib in Resources */,
 				9E0049AD1A683F9B00EBF440 /* Main.storyboard in Resources */,
 				9E0049B21A683F9B00EBF440 /* LaunchScreen.xib in Resources */,
 				9E0049AF1A683F9B00EBF440 /* Images.xcassets in Resources */,
@@ -417,6 +413,7 @@
 				9E0049C31A683F9B00EBF440 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9E0049C41A683F9B00EBF440 /* Build configuration list for PBXNativeTarget "CropImageViewTests" */ = {
 			isa = XCConfigurationList;
@@ -425,6 +422,7 @@
 				9E0049C61A683F9B00EBF440 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
