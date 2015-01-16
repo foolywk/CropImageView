@@ -63,10 +63,6 @@ class CropImageView: UIView, UIScrollViewDelegate {
         imageView.image = image
     }
     
-    func setImageWithUrl(url: NSURL!) {
-        
-    }
-    
     func croppedImage() -> UIImage {
         var newImage = UIImage()
         
