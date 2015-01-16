@@ -1,4 +1,4 @@
-//
+ //
 //  ViewController.swift
 //  CropImageView
 //
@@ -11,7 +11,6 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet var cropImageViewContainer: UIView!
-    
     var cropImageView = CropImageView()
     
     override func viewDidLoad() {
@@ -19,6 +18,11 @@ class ViewController: UIViewController {
         
         cropImageView = CropImageView(container: cropImageViewContainer)
         cropImageView.setImage(UIImage(named:"sampleImage")!)
+    }
+    
+    @IBAction func croppedButtonWasPressed(sender: AnyObject) {
+    
+        let image = cropImageView.croppedImage()
     }
 }
 

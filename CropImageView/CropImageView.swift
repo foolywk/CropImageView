@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CropImageView: UIView {
+class CropImageView: UIView, UIScrollViewDelegate {
     
     var scrollView = UIScrollView()
     var imageView = UIImageView()
@@ -38,7 +38,6 @@ class CropImageView: UIView {
         imageView = UIImageView(frame: CGRectMake(0, 0, scrollView.frame.width, scrollView.frame.height))
         scrollView.addSubview(imageView)
         
-        
         container.addSubview(self)
     }
     
@@ -59,11 +58,36 @@ class CropImageView: UIView {
         
         // update scrollview content size to that of imageView & center in container
         scrollView.contentSize = CGSizeMake(imageView.frame.width, imageView.frame.height)
-
+        
         // add image
         imageView.image = image
-        
-        dump(scrollView.frame)
-        dump(imageView.frame)
     }
+    
+    func setImageWithUrl(url: NSURL!) {
+        
+    }
+    
+    func croppedImage() -> UIImage {
+        var newImage = UIImage()
+        
+        if let image = imageView.image {
+            
+            // find the scale of UIImage / UIImageView
+            let scale = image.size.width / imageView.frame.width * 2
+            
+            // calculate the crop rectangle
+            let x = scrollView.contentOffset.x * scale
+            let y = scrollView.contentOffset.y * scale
+            let width = frame.width * scale
+            let height = frame.height * scale
+    
+            // create new UIImage
+            let imageRef = CGImageCreateWithImageInRect(imageView.image?.CGImage, CGRectMake(x, y, width, height))
+            if let croppedImage = UIImage(CGImage: imageRef) {
+                newImage = croppedImage
+            }
+        }
+        return newImage
+    }
+    
 }

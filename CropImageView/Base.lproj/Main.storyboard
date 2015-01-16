@@ -24,11 +24,23 @@
                                     <constraint firstAttribute="width" constant="150" id="uwV-Rr-FLY"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SLB-Re-9Cq">
+                                <rect key="frame" x="137" y="518" width="46" height="30"/>
+                                <state key="normal" title="Crop!">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="croppedButtonWasPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="8ZM-Hz-auL"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="cYR-KK-ztu" secondAttribute="centerY" id="6Zv-NE-MQd"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="SLB-Re-9Cq" secondAttribute="bottom" constant="20" id="7Pd-Ya-Kl8"/>
                             <constraint firstAttribute="centerX" secondItem="cYR-KK-ztu" secondAttribute="centerX" id="CdF-IS-Ssi"/>
+                            <constraint firstAttribute="trailing" secondItem="SLB-Re-9Cq" secondAttribute="trailing" constant="137" id="RSR-H3-6lw"/>
+                            <constraint firstItem="SLB-Re-9Cq" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="137" id="k1O-Tr-Idj"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
