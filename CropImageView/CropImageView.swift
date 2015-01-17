@@ -8,7 +8,15 @@
 
 import UIKit
 
+protocol CropImageViewDelegate {
+    
+    func cropImageViewDidEndEditing(#cropImageView: CropImageView, contentOffset: CGPoint)
+}
+
+
 class CropImageView: UIView, UIScrollViewDelegate {
+    
+    var delegate: CropImageViewDelegate?
     
     var scrollView = UIScrollView()
     var imageView = UIImageView()
@@ -23,15 +31,19 @@ class CropImageView: UIView, UIScrollViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(container: UIView ) {
+    init(container: UIView, delegate: CropImageViewDelegate ) {
         
         super.init(frame: CGRectMake(0, 0, container.frame.width, container.frame.height))
+        
+        // set delegate
+        self.delegate = delegate
         
         // add scrollView
         scrollView = UIScrollView(frame: CGRectMake(0, 0, frame.width, frame.height))
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.bounces = false
+        scrollView.delegate = self
         addSubview(scrollView)
         
         // add imageView
@@ -63,20 +75,26 @@ class CropImageView: UIView, UIScrollViewDelegate {
         imageView.image = image
     }
     
+    func setImage(image: UIImage, contentOffset: CGPoint?) {
+        
+        setImage(image)
+        (contentOffset != nil ) ? scrollView.setContentOffset(contentOffset!, animated: false) : scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
+    }
+    
     func croppedImage() -> UIImage {
         var newImage = UIImage()
         
         if let image = imageView.image {
             
             // find the scale of UIImage / UIImageView
-            let scale = image.size.width / imageView.frame.width * 2
+            let scale = image.size.width / imageView.frame.width * UIScreen.mainScreen().scale
             
             // calculate the crop rectangle
             let x = scrollView.contentOffset.x * scale
             let y = scrollView.contentOffset.y * scale
             let width = frame.width * scale
             let height = frame.height * scale
-    
+            
             // create new UIImage
             let imageRef = CGImageCreateWithImageInRect(imageView.image?.CGImage, CGRectMake(x, y, width, height))
             if let croppedImage = UIImage(CGImage: imageRef) {
@@ -86,4 +104,13 @@ class CropImageView: UIView, UIScrollViewDelegate {
         return newImage
     }
     
+    // MARK: UIScrollViewDelegate
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        delegate?.cropImageViewDidEndEditing(cropImageView: self, contentOffset: scrollView.contentOffset)
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        delegate?.cropImageViewDidEndEditing(cropImageView: self, contentOffset: scrollView.contentOffset)
+    }
 }
