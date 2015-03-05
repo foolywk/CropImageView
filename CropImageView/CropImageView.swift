@@ -7,12 +7,12 @@
 //
 
 import UIKit
+import Darwin
 
 protocol CropImageViewDelegate {
     
-    func cropImageViewDidEndEditing(#cropImageView: CropImageView, contentOffset: CGPoint)
+    func cropImageViewDidEndEditing(#cropImageView: CropImageView, contentOffset: CGPoint, zoomScale: CGFloat)
 }
-
 
 class CropImageView: UIView, UIScrollViewDelegate {
     
@@ -43,6 +43,7 @@ class CropImageView: UIView, UIScrollViewDelegate {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.bounces = false
+        scrollView.bouncesZoom = false
         scrollView.delegate = self
         addSubview(scrollView)
         
@@ -54,6 +55,8 @@ class CropImageView: UIView, UIScrollViewDelegate {
     }
     
     func setImage(image: UIImage) {
+        
+        scrollView.zoomScale = 1.0
         
         // set the image view's aspect ratio to that of the input image
         let aspectRatio = image.size.width / image.size.height
@@ -73,21 +76,51 @@ class CropImageView: UIView, UIScrollViewDelegate {
         
         // add image
         imageView.image = image
+        
+        // set max zoom scale
+        scrollView.minimumZoomScale = 1.0
+        scrollView.maximumZoomScale = 2.0
     }
     
-    func setImage(image: UIImage, contentOffset: CGPoint?) {
+    func setImage(image: UIImage, contentOffset: CGPoint?, zoomScale: CGFloat?) {
         
         setImage(image)
-        (contentOffset != nil ) ? scrollView.setContentOffset(contentOffset!, animated: false) : scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
+        
+        println("\n## cropImageView.setImage() called")
+        
+        if let scale = zoomScale { // Set zoom scale
+            
+            scrollView.setZoomScale(scale, animated: false)
+        }
+        
+        if let offset = contentOffset { // Set content offset
+            scrollView.setContentOffset(offset, animated: false)
+        }
     }
     
     func croppedImage() -> UIImage {
+        
         var newImage = UIImage()
         
-        if let image = imageView.image {
+        if var image = imageView.image {
+            
+            // get image orientation data and rotate if needed
+            var rotateDegrees: CGFloat = 0
+            
+            switch image.imageOrientation {
+            case .Left:     rotateDegrees = -90
+            case .Right:    rotateDegrees = 90
+            case .Up:       rotateDegrees = 0
+            case .Down:     rotateDegrees = 180
+            default: break
+            }
+            
+            if let rotatedImage = UIImage(CGImage: image.CGImage)?.imageByRotatingByDegrees(rotateDegrees) {
+                image = rotatedImage
+            }
             
             // find the scale of UIImage / UIImageView
-            let scale = image.size.width / imageView.frame.width * UIScreen.mainScreen().scale
+            let scale = image.size.width / imageView.frame.width
             
             // calculate the crop rectangle
             let x = scrollView.contentOffset.x * scale
@@ -96,9 +129,9 @@ class CropImageView: UIView, UIScrollViewDelegate {
             let height = frame.height * scale
             
             // create new UIImage
-            let imageRef = CGImageCreateWithImageInRect(imageView.image?.CGImage, CGRectMake(x, y, width, height))
-            if let croppedImage = UIImage(CGImage: imageRef) {
-                newImage = croppedImage
+            let imageRef = CGImageCreateWithImageInRect(image.CGImage, CGRectMake(x, y, width, height))
+            if let cropImage = UIImage(CGImage: imageRef) {
+                newImage = cropImage
             }
         }
         return newImage
@@ -106,11 +139,19 @@ class CropImageView: UIView, UIScrollViewDelegate {
     
     // MARK: UIScrollViewDelegate
     
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
+    
+    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
+        delegate?.cropImageViewDidEndEditing(cropImageView: self, contentOffset: scrollView.contentOffset, zoomScale: scale)
+    }
+    
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        delegate?.cropImageViewDidEndEditing(cropImageView: self, contentOffset: scrollView.contentOffset)
+        delegate?.cropImageViewDidEndEditing(cropImageView: self, contentOffset: scrollView.contentOffset, zoomScale: scrollView.zoomScale)
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        delegate?.cropImageViewDidEndEditing(cropImageView: self, contentOffset: scrollView.contentOffset)
+        delegate?.cropImageViewDidEndEditing(cropImageView: self, contentOffset: scrollView.contentOffset, zoomScale: scrollView.zoomScale)
     }
 }
